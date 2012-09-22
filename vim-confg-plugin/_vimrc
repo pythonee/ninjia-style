@@ -1,0 +1,577 @@
+"
+"   require pathogen plugin
+"
+"   require nerdtree plugin
+"   require buffer explore plugin
+"   require pyflakes plugin
+"   require tasklist plugin
+"   require supertab plugin
+"   require tabular  plugin
+"   require latex suit plugin
+"   require pep8.vim plugin require pep8.py script
+"   require zen-coding plugin
+"   require xtemplate plugin
+"   require status line plugin
+"   require ACK plugin
+"   require jsbeautify plugin
+"   require python-fold plugin
+"
+"   corporation colorscheme
+"   gq manual ending line in 80
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => pathogen  Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+filetype off
+call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+set history=700
+
+" Enable filetype plugin
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+set confirm "Y-N-C prompt if closing with unsaved changes.
+set report=0 " : commands always print changed line count.
+set showcmd  " Show incomplete normal mode commands as I type.
+set shortmess+=a    " Use [+]/[RO]/[w] for modified/readonly/written.
+
+" don't outdent hashes
+" inoremap # #
+
+" fold
+set foldmethod=syntax
+set foldlevel=10
+
+set laststatus=2
+
+" tex target
+autocmd FileType tex TTarget pdf
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
+
+" Fast editing of the .vimrc
+map <leader>e :e! ~/.vim_runtime/vimrc<cr>
+
+" When vimrc is edited, reload it
+autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set 7 lines to the curors - when moving vertical..
+set so=7
+set wildmenu "Turn on WiLd menu
+set ruler "Always show current position
+set cmdheight=2 "The commandbar height
+set hid "Change buffer - without saving
+
+" Set backspace config
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+set ignorecase "Ignore case when searching
+set smartcase
+
+set hlsearch "Highlight search things
+set incsearch "Make search act like search in modern browsers
+set nolazyredraw "Don't redraw while executing macros
+
+set magic "Set magic on, for regular expressions
+
+set showmatch "Show matching bracets when text indicator is over them
+set mat=2 "How many tenths of a second to blink
+
+" No sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=   " disable beep
+set tm=500
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+colorscheme corporation
+
+syntax on " Enable syntax highlight
+set nu  " line number
+
+set encoding=utf8
+
+if has("win32")
+        set guifont=Courier_New:h10:cANSI
+        set shellslash
+
+        set termencoding=utf-8
+        set fileencoding=utf-8
+        set fileencodings=utf-8,gb18030,ucs-bom,english,utf-16,big5
+
+        set langmenu=en_US.utf-8
+        source $VIMRUNTIME/delmenu.vim
+        source $VIMRUNTIME/menu.vim
+        language messages en_US.utf-8
+
+        language messages en_US.utf-8
+
+    else
+        set guifont=Monaco:h11:cANSI
+endif
+
+if has('gui_running')
+    set go = " Maximising Screen Space
+    set t_Co=256
+    set guitablabel=%t
+endif
+
+try
+    lang en_US
+catch
+endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set nobackup                " No Backup file
+set nowb                    " No nowrithbackup
+set noswapfile
+set noautowrite             " Never write a file unless I request it.
+set noautowriteall          " NEVER.
+
+"Persistent undo
+try
+    if MySys() == "windows"
+      set undodir=C:\Windows\Temp
+    else
+      set undodir=~/.vim_runtime/undodir
+    endif
+
+    set undofile
+catch
+endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+set smarttab
+
+" want to meet the gold ratio, but ...
+set lines=35    " gui window height
+set columns=125  " gui window width
+
+set lbr  "Linebreak
+set textwidth=78 fo+=Mm " text width
+
+set ai "Auto indent
+set si "Smart indet
+set wrap "Wrap lines
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Visual mode related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Really useful!
+" In visual mode when you press * or # to search for the current selection
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+
+" When you press gv you vimgrep after the selected text
+vnoremap <silent> gv :call VisualSearch('gv')<CR>
+map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+" From an idea by Michael Naumann
+function! VisualSearch(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Command mode related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+cno $c e <C-\>eCurrentFileDir("e")<cr>
+" $q is super useful when browsing on the command line
+cno $q <C-\>eDeleteTillSlash()<cr>
+
+" Bash like keys for the command line
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
+
+func! Cwd()
+  let cwd = getcwd()
+  return "e " . cwd
+endfunc
+
+func! DeleteTillSlash()
+  let g:cmd = getcmdline()
+  if MySys() == "linux" || MySys() == "mac"
+    let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+  else
+    let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
+  endif
+  if g:cmd == g:cmd_edited
+    if MySys() == "linux" || MySys() == "mac"
+      let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
+    else
+      let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
+    endif
+  endif
+  return g:cmd_edited
+endfunc
+
+func! CurrentFileDir(cmd)
+  return a:cmd . " " . expand("%:p:h") . "/"
+endfunc
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <silent> <leader><cr> :noh<cr>
+
+" Close the current buffer
+map <leader>bd :Bclose<cr>
+
+" Close all the buffers
+map <leader>ba :1,300 bd!<cr>
+
+" Smart way to move btw. windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Use the arrows to something usefull
+map <right> :bn<cr>
+map <left> :bp<cr>
+
+" Tab configuration
+map <leader>tn :tabnew<cr>
+map <leader>te :tabedit
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+
+" When pressing <leader>cd switch to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>
+
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+" Specify the behavior when switching between buffers
+try
+  set switchbuf=usetab
+  set stal=2
+catch
+endtry
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Parenthesis/bracket expanding
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
+" Map auto complete of (, ", ', [
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+inoremap $t <><esc>i
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Abbrevs
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+iab today <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Remap VIM 0
+map 0 ^
+
+"Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+"Delete trailing white space, useful for Python ;)
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Cope for quickfix window
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Do :help cope if you are unsure what cope is. It's super useful!
+nmap <leader>cc :cclose<CR>
+nmap <leader>c :copen<CR>
+map <leader>n :cn<cr>
+map <leader>p :cp<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config buffer explore Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0 " Do not show default help.
+let g:bufExplorerShowRelativePath=1 " Show relative paths.
+let g:bufExplorerSortBy='mru' " Sort by most recently used.
+let g:bufExplorerSplitRight=0 " Split left.
+let g:bufExplorerSplitVertical=1 " Split vertically.
+let g:bufExplorerSplitVertSize = 30 " Split width
+let g:bufExplorerUseCurrentWindow=1 " Open in new window.
+autocmd BufWinEnter \[Buf\ List\] setl nonumber
+
+map <leader>o :BufExplorer<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config Minibuffer explore plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:miniBufExplModSelTarget = 1
+let g:miniBufExplorerMoreThanOne = 2
+let g:miniBufExplModSelTarget = 0
+let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplVSplit = 25
+let g:miniBufExplMaxSize = 25
+let g:miniBufExplMinSize = 25
+let g:miniBufExplSplitBelow = 1
+let g:miniBufExplorerMoreThanOne = 10
+
+let g:bufExplorerSortBy = "name"
+autocmd BufRead,BufNew :call UMiniBufExplorer
+
+map <Leader>u :UMiniBufExplorer<cr>
+map <Leader>t :TMiniBufExplorer<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Omni complete functions filetype super tab completation
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("autocmd") && exists("+omnifunc")
+  autocmd Filetype *
+    \   if &omnifunc == "" |
+    \     setlocal omnifunc=syntaxcomplete#Complete |
+    \   endif
+endif
+
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+
+let g:SuperTabRetainCompletionType=2
+let g:SuperTabDefaultCompletionType="context"
+set completeopt+=longest,menu
+
+inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" "Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+"
+" "Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tabular align mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a: :Tabularize /:\zs<CR>
+  vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Python section
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let python_highlight_all = 1
+autocmd FileType python syn keyword pythonDecorator if elif else for while try except finally def class with self
+" remove ^M
+autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+let g:pep8_map='<leader>8' " => pep8 short cut
+
+" covert tab to spaces
+autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 smartindent autoindent
+
+autocmd FileType python inoremap <buffer> $r return
+autocmd FileType python inoremap <buffer> $i import
+autocmd FileType python inoremap <buffer> $p print
+autocmd FileType python inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
+autocmd FileType python map <buffer> <leader>1 /class
+autocmd FileType python map <buffer> <leader>2 /def
+autocmd FileType python map <buffer> <leader>C ?class
+autocmd FileType python map <buffer> <leader>D ?def
+
+" Display tabs at the beginning of a line in Python mode as bad.
+autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+" Make trailing whitespace be flagged as bad.
+autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /\s\+$/
+" Use the below highlight group when displaying bad whitespace is desired.
+highlight BadWhitespace ctermbg=red guibg=red
+
+autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 *.inc setlocal ft=html
+
+" F5 run python
+autocmd BufRead *.py nmap <F5> :!python %<CR>
+
+let g:pyflakes_use_quickfix = 0 " pyflakes
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => C section
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead,BufNewFile Makefile* set noexpandtab
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Html section
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType html,xhtml,xml,css setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => JavaScript section
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au FileType javascript call JavaScriptFold()
+au FileType javascript setl fen
+au FileType javascript setl nocindent
+
+au FileType javascript imap <c-t> AJS.log();<esc>hi
+au FileType javascript imap <c-a> alert();<esc>hi
+
+au FileType javascript inoremap <buffer> $r return
+au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
+
+function! JavaScriptFold()
+    setl foldmethod=syntax
+    setl foldlevelstart=10
+    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+
+    function! FoldText()
+    return substitute(getline(v:foldstart), '{.*', '{...}', '')
+    endfunction
+    setl foldtext=FoldText()
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => MISC
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" sudo write this
+cmap W! w !sudo tee % >/dev/null
+" Fast saving
+nmap <leader>w :w!<cr>
+" Quit window on <leader>q
+nnoremap <leader>q :q<CR>
+" Paste from clipboard
+map <leader>p "+gP
+" Replace a word with yanked text
+vmap S "_d"0P
+" Remove trailing whitespace on <leader>S
+nnoremap <leader>tt :%s/\s\+$//<cr>
+" Compressing empty lines
+nnoremap <leader>cs :%s/^\n\+/\r/<cr>
+" auto format code
+nnoremap <leader>ff gg=G
+
+" Toggle the tasklist
+map <leader>td <Plug>TaskList
+"  Open NerdTree
+map <leader>nd :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+" Ack searching
+set wildignore+=*.o,*.obj,.git,*.pyc " Ignore these files when completing
+set grepprg=ack-grep     " replace the default grep program with ack
+nmap <leader>a <Esc>:Ack!
+
+" MRU plugin
+let MRU_Max_Entries = 400
+map <leader>f :MRU<CR>
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" redir message
+function! TabMessage(cmd)
+  redir => message
+  silent execute a:cmd
+  redir END
+  tabnew
+  silent put=message
+  set nomodified
+endfunction
+command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
+
+" remember last edit location
+autocmd BufReadPost *
+			\ if line("'\"")>0&&line("'\"")<=line("$") |
+			\	exe "normal g'\"" |
+			\ endif
+
