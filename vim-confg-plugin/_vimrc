@@ -532,6 +532,8 @@ nmap <leader>w :w!<cr>
 nnoremap <leader>q :q<CR>
 " Paste from clipboard
 map <leader>p "+gP
+" Copy to clipboard
+vmap <leader>y "+y
 " Replace a word with yanked text
 vmap S "_d"0P
 " Remove trailing whitespace on <leader>S
