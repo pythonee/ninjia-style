@@ -118,8 +118,8 @@ if has("win32")
         set shellslash
 
         set termencoding=utf-8
-        set fileencoding=utf-8
-        set fileencodings=utf-8,gb18030,ucs-bom,english,utf-16,big5
+        set fileencoding=english
+        set fileencodings=ucs-bom,utf-8,english
 
         set langmenu=en_US.utf-8
         source $VIMRUNTIME/delmenu.vim
@@ -267,6 +267,16 @@ map <silent> <leader><cr> :noh<cr>
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
+
+" Go to middle of line in vim 
+map gm :call cursor(0, virtcol('$')/2)<CR>
+
+" Center screen on current line 
+nmap <space> zz
+
+" Centering the search next/search previous 
+nmap n nzz
+nmap N Nzz
 
 " Close all the buffers
 map <leader>ba :1,300 bd!<cr>
@@ -435,8 +445,8 @@ inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " "Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
-"
-" "Shortcuts using <leader>
+
+" Shortcuts using <leader>
 map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
@@ -457,7 +467,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let python_highlight_all = 1
 autocmd FileType python syn keyword pythonDecorator if elif else for while try except finally def class with self
-" remove ^M
+" remove 
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 let g:pep8_map='<leader>8' " => pep8 short cut
 
@@ -532,10 +542,6 @@ nmap <leader>w :w!<cr>
 nnoremap <leader>q :q<CR>
 " Paste from clipboard
 map <leader>p "+gP
-" Copy to clipboard
-vmap <leader>y "+y
-" Clip to clipboard
-vmap <leader>d "+d
 " Replace a word with yanked text
 vmap S "_d"0P
 " Remove trailing whitespace on <leader>S
@@ -549,7 +555,6 @@ nnoremap <leader>ff gg=G
 map <leader>td <Plug>TaskList
 "  Open NerdTree
 map <leader>nd :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$']
 " Ack searching
 set wildignore+=*.o,*.obj,.git,*.pyc " Ignore these files when completing
 set grepprg=ack-grep     " replace the default grep program with ack
