@@ -1,0 +1,3 @@
+io:format("consulting .erlang in :~p~n", [element(2, file:get_cwd())]).
+c:cd("c:/users/pythonee/desktop").
+io:format("Now in :~p~n", [element(2, file:get_cwd())]).
