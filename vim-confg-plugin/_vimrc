@@ -71,6 +71,8 @@ map <leader>e :e! ~/.vim_runtime/vimrc<cr>
 " When vimrc is edited, reload it
 autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 
+autocmd BufWrite,BufNewFile *.sh set fileformat=unix    
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -283,8 +285,8 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Use the arrows to something usefull
-map <right> :bn<cr>
-map <left> :bp<cr>
+map <right> :tabnext<cr>
+map <left> :tabprevious<cr>
 
 " Tab configuration
 map <leader>tn :tabnew<cr>
@@ -491,8 +493,6 @@ autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 *.inc setlocal ft=html
 " F5 run python
 autocmd BufRead *.py nmap <F5> :!python %<CR>
 
-let g:pyflakes_use_quickfix = 0 " pyflakes
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => C section
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -551,6 +551,8 @@ nnoremap <leader>cs :%s/^\n\+/\r/<cr>
 " auto format code
 nnoremap <leader>ff gg=G
 
+map gm :call cursor(0, virtcol('$')/2)<CR>
+
 " Toggle the tasklist
 map <leader>td <Plug>TaskList
 "  Open NerdTree
@@ -581,7 +583,18 @@ command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
 
 " remember last edit location
 autocmd BufReadPost *
-			\ if line("'\"")>0&&line("'\"")<=line("$") |
-			\	exe "normal g'\"" |
-			\ endif
+            \ if line("'\"")>0&&line("'\"")<=line("$") |
+            \   exe "normal g'\"" |
+            \ endif
+
+nnoremap <C-Up> :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)+1)',
+ \ 'g')<CR>
+nnoremap <C-Down> :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)-1)',
+ \ 'g')<CR>
 
