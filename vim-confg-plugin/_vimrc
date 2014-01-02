@@ -72,6 +72,7 @@ map <leader>e :e! ~/.vim_runtime/vimrc<cr>
 autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 
 autocmd BufWrite,BufNewFile *.sh set fileformat=unix    
+autocmd BufReadPost,BufWrite * retab 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -285,6 +286,8 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Use the arrows to something usefull
+map <C-right> :bn<cr>
+map <C-left> :bp<cr>
 map <right> :tabnext<cr>
 map <left> :tabprevious<cr>
 
@@ -586,17 +589,6 @@ autocmd BufReadPost *
             \ if line("'\"")>0&&line("'\"")<=line("$") |
             \   exe "normal g'\"" |
             \ endif
-
-nnoremap <C-Up> :silent! let &guifont = substitute(
- \ &guifont,
- \ ':h\zs\d\+',
- \ '\=eval(submatch(0)+1)',
- \ 'g')<CR>
-nnoremap <C-Down> :silent! let &guifont = substitute(
- \ &guifont,
- \ ':h\zs\d\+',
- \ '\=eval(submatch(0)-1)',
- \ 'g')<CR>
 
 nnoremap <C-Up> :silent! let &guifont = substitute(
  \ &guifont,
