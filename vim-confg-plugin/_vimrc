@@ -349,7 +349,8 @@ inoremap $t <><esc>i
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Abbrevs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-iab today <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+inoremap `now <C-R>=strftime("%d/%m/%y %H:%M:%S")<CR><right><right>
+inoremap `fn <C-R>=expand("%:t:r")<CR><right><right>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -376,7 +377,7 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Do :help cope if you are unsure what cope is. It's super useful!
 nmap <leader>cc :cclose<CR>
-nmap <leader>c :copen<CR>
+nmap <leader>co :copen<CR>
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
