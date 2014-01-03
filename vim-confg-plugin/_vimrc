@@ -71,8 +71,24 @@ map <leader>e :e! ~/.vim_runtime/vimrc<cr>
 " When vimrc is edited, reload it
 autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 
-autocmd BufWrite,BufNewFile *.sh set fileformat=unix    
-autocmd BufReadPost,BufWrite * retab 
+autocmd BufNewFile,BufWritePre *.sh set fileformat=unix
+autocmd BufReadPost,BufWritePre * retab
+
+autocmd FileWritePre                * :call TrimWhiteSpace()
+autocmd FileAppendPre               * :call TrimWhiteSpace()
+autocmd FilterWritePre              * :call TrimWhiteSpace()
+autocmd BufReadPost,BufWritePre     * :call TrimWhiteSpace()
+
+" Removes trailing spaces
+function! TrimWhiteSpace()
+    let previous_search=@/
+    let previous_cursor_line=line('.')
+    let previous_cursor_column=col('.')
+    %s/\s\+$//e
+    %s/^\n\+/\r/e
+    let @/=previous_search
+    call cursor(previous_cursor_line, previous_cursor_column)
+endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -395,7 +411,6 @@ autocmd BufWinEnter \[Buf\ List\] setl nonumber
 
 map <leader>o :BufExplorer<cr>
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions filetype super tab completation
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -445,7 +460,7 @@ nmap <Leader>ac :Tabularize /:<CR>
 vmap <Leader>ac :Tabularize /:<CR>
 
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
- 
+
 function! s:align()
   let p = '^\s*|\s.*\s|\s*$'
   if getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
@@ -457,12 +472,10 @@ function! s:align()
   endif
 endfunction
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Config TaskList
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <unique> <Leader>to <Plug>TaskList
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Python section
@@ -601,4 +614,5 @@ nnoremap <C-Down> :silent! let &guifont = substitute(
  \ ':h\zs\d\+',
  \ '\=eval(submatch(0)-1)',
  \ 'g')<CR>
+
 
