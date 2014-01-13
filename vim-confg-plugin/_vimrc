@@ -72,12 +72,12 @@ map <leader>e :e! ~/.vim_runtime/vimrc<cr>
 autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 
 autocmd BufNewFile,BufWritePre *.sh set fileformat=unix
-autocmd BufReadPost,BufWritePre * retab
+autocmd BufWritePre * retab
 
 autocmd FileWritePre                * :call TrimWhiteSpace()
 autocmd FileAppendPre               * :call TrimWhiteSpace()
 autocmd FilterWritePre              * :call TrimWhiteSpace()
-autocmd BufReadPost,BufWritePre     * :call TrimWhiteSpace()
+autocmd BufWritePre                 * :call TrimWhiteSpace()
 
 " Removes trailing spaces
 function! TrimWhiteSpace()
