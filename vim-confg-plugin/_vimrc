@@ -138,7 +138,7 @@ set nu  " line number
 set encoding=utf8
 
 if has("win32")
-        set guifont=Courier_New:h10:cANSI
+        set guifont=YaHei\ Consolas\ Hybrid:h11:cANSI
         set shellslash
 
         set termencoding=utf-8
@@ -149,7 +149,6 @@ if has("win32")
         source $VIMRUNTIME/delmenu.vim
         source $VIMRUNTIME/menu.vim
         language messages en_US.utf-8
-
         language messages en_US.utf-8
 
     else
@@ -198,8 +197,8 @@ set softtabstop=4
 set smarttab
 
 " want to meet the gold ratio, but ...
-set lines=35    " gui window height
-set columns=125  " gui window width
+set lines=30    " gui window height
+set columns=135  " gui window width
 
 set lbr  "Linebreak
 " set textwidth=78 fo+=Mm " text width
