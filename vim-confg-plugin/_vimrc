@@ -137,7 +137,7 @@ set nu  " line number
 
 set encoding=utf8
 
-set guifont=YaHei\ Consolas\ Hybrid:h11:cANSI
+set guifont=Microsoft\ YaHei\ Mono:h11:cANSI
 
 set termencoding=utf-8
 set fileencoding=utf-8
