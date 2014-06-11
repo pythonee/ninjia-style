@@ -40,13 +40,6 @@ set foldlevel=10
 
 set laststatus=2
 
-" tex target
-autocmd FileType tex TTarget pdf
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
 " Fast editing of the .vimrc
 map <leader>e :e! ~/.vim_runtime/vimrc<cr>
 
@@ -447,6 +440,7 @@ nnoremap <C-Down> :silent! let &guifont = substitute(
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'klen/python-mode'
 Bundle 'scrooloose/nerdtree'
+Bundle 'https://bitbucket.org/Haroogan/vim-youcompleteme-for-windows.git'
 Bundle 'mattn/emmet-vim'
 Bundle 'mileszs/ack.vim'
 Bundle 'Lokaltog/vim-easymotion'
@@ -458,8 +452,17 @@ Bundle 'FuzzyFinder'
 Bundle 'mru'
 Bundle 'tComment'
 
+set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23 
+
 "  Open NerdTree
 map <leader>nd :NERDTreeToggle<CR>
+
+" tex target
+autocmd FileType tex TTarget pdf
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -485,4 +488,5 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
+
 
