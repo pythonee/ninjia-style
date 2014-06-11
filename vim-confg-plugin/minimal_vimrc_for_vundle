@@ -445,6 +445,21 @@ nnoremap <C-Down> :silent! let &guifont = substitute(
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Bundle
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'klen/python-mode'
+Bundle 'scrooloose/nerdtree'
+Bundle 'mattn/emmet-vim'
+Bundle 'mileszs/ack.vim'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'wincent/Command-T'
+Bundle 'L9'
+Bundle 'FuzzyFinder' 
+Bundle 'mru'
+Bundle 'tComment'
+
+"  Open NerdTree
+map <leader>nd :NERDTreeToggle<CR>
 
 set diffexpr=MyDiff()
 function MyDiff()
@@ -470,5 +485,4 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-
 
