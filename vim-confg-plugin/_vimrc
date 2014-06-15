@@ -1,30 +1,39 @@
-"
-"   require pathogen plugin
-"
-"   require nerdtree plugin
-"   require buffer explore plugin
-"   require pyflakes plugin
-"   require tasklist plugin
-"   require supertab plugin
-"   require tabular  plugin
-"   require latex suit plugin
-"   require pep8.vim plugin require pep8.py script
-"   require zen-coding plugin
-"   require xtemplate plugin
-"   require status line plugin
-"   require ACK plugin
-"   require jsbeautify plugin
-"   require python-fold plugin
-"
-"   corporation colorscheme
-"   gq manual ending line in 80
+" require vundle
+" require python
+" require solarized theme
+" require microsoft yahei mono font
+" require download latex suit from sourceforg
+" require download you complete me from bitbucket(require download libclang.dll from http://www.ishani.org/)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => pathogen  Plugin
+" => Load Vundle
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-filetype off
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Bundle
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'jlanzarotta/bufexplorer'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'klen/python-mode'
+Bundle 'scrooloose/nerdtree'
+Bundle 'https://bitbucket.org/Haroogan/vim-youcompleteme-for-windows.git'
+Bundle 'mattn/emmet-vim'
+Bundle 'mileszs/ack.vim'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'wincent/Command-T'
+Bundle 'L9'
+Bundle 'FuzzyFinder' 
+Bundle 'mru'
+Bundle 'tComment'
+
+set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -58,13 +67,6 @@ set foldlevel=10
 
 set laststatus=2
 
-" tex target
-autocmd FileType tex TTarget pdf
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
 " Fast editing of the .vimrc
 map <leader>e :e! ~/.vim_runtime/vimrc<cr>
 
@@ -73,11 +75,6 @@ autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 
 autocmd BufNewFile,BufWritePre *.sh set fileformat=unix
 autocmd BufWritePre * retab
-
-autocmd FileWritePre                * :call TrimWhiteSpace()
-autocmd FileAppendPre               * :call TrimWhiteSpace()
-autocmd FilterWritePre              * :call TrimWhiteSpace()
-autocmd BufWritePre                 * :call TrimWhiteSpace()
 
 " Removes trailing spaces
 function! TrimWhiteSpace()
@@ -126,7 +123,7 @@ set tm=500
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "colorscheme corporation
-colorscheme molokai
+colorscheme solarized
 let g:rehash256 = 1
 
 " when using molokai in console version
@@ -396,46 +393,6 @@ map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Config buffer explore Plugin
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:bufExplorerDefaultHelp=0 " Do not show default help.
-let g:bufExplorerShowRelativePath=1 " Show relative paths.
-let g:bufExplorerSortBy='mru' " Sort by most recently used.
-let g:bufExplorerSplitRight=0 " Split left.
-let g:bufExplorerSplitVertical=1 " Split vertically.
-let g:bufExplorerSplitVertSize = 30 " Split width
-let g:bufExplorerUseCurrentWindow=1 " Open in new window.
-autocmd BufWinEnter \[Buf\ List\] setl nonumber
-
-map <leader>o :BufExplorer<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Omni complete functions filetype super tab completation
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("autocmd") && exists("+omnifunc")
-  autocmd Filetype *
-    \   if &omnifunc == "" |
-    \     setlocal omnifunc=syntaxcomplete#Complete |
-    \   endif
-endif
-
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-
-let g:SuperTabRetainCompletionType=2
-let g:SuperTabDefaultCompletionType="context"
-set completeopt+=longest,menu
-
-inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<C-d>"
-inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<C-u>"
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " "Pressing ,ss will toggle and untoggle spell checking
@@ -446,101 +403,6 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tabular align mapping
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <Leader>ae :Tabularize /=<CR>
-vmap <Leader>ae :Tabularize /=<CR>
-nmap <Leader>as :Tabularize /<Space><CR>
-vmap <Leader>as :Tabularize /<Space><CR>
-nmap <Leader>ac :Tabularize /:<CR>
-vmap <Leader>ac :Tabularize /:<CR>
-
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-
-function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Config TaskList
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <unique> <Leader>to <Plug>TaskList
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Python section
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let python_highlight_all = 1
-autocmd FileType python syn keyword pythonDecorator if elif else for while try except finally def class with self
-" remove ^M
-autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-let g:pep8_map='<leader>8' " => pep8 short cut
-
-" covert tab to spaces
-autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4 softtabstop=4 smartindent autoindent
-
-autocmd FileType python inoremap <buffer> $r return
-autocmd FileType python inoremap <buffer> $i import
-autocmd FileType python inoremap <buffer> $p print
-autocmd FileType python inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
-autocmd FileType python map <buffer> <leader>1 /class
-autocmd FileType python map <buffer> <leader>2 /def
-autocmd FileType python map <buffer> <leader>C ?class
-autocmd FileType python map <buffer> <leader>D ?def
-
-" Display tabs at the beginning of a line in Python mode as bad.
-autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-" Make trailing whitespace be flagged as bad.
-autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /\s\+$/
-" Use the below highlight group when displaying bad whitespace is desired.
-highlight BadWhitespace ctermbg=red guibg=red
-
-autocmd BufNewFile,BufRead *.mako,*.mak,*.jinja2 *.inc setlocal ft=html
-
-" F5 run python
-autocmd BufRead *.py nmap <F5> :!python %<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => C section
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufRead,BufNewFile Makefile* set noexpandtab
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Html section
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType html,xhtml,xml,css setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => JavaScript section
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au FileType javascript call JavaScriptFold()
-au FileType javascript setl fen
-au FileType javascript setl nocindent
-
-au FileType javascript imap <c-t> AJS.log();<esc>hi
-au FileType javascript imap <c-a> alert();<esc>hi
-
-au FileType javascript inoremap <buffer> $r return
-au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
-
-function! JavaScriptFold()
-    setl foldmethod=syntax
-    setl foldlevelstart=10
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-    function! FoldText()
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
-endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
@@ -567,20 +429,6 @@ nnoremap <leader>cs :%s/^\n\+/\r/<cr>
 nnoremap <leader>ff gg=G
 
 map gm :call cursor(0, virtcol('$')/2)<CR>
-
-" Toggle the tasklist
-map <leader>td <Plug>TaskList
-"  Open NerdTree
-map <leader>nd :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$']
-" Ack searching
-set wildignore+=*.o,*.obj,.git,*.pyc " Ignore these files when completing
-set grepprg=ack-grep     " replace the default grep program with ack
-nmap <leader>ac <Esc>:Ack!
-
-" MRU plugin
-let MRU_Max_Entries = 400
-map <leader>f :MRU<CR>
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -613,4 +461,55 @@ nnoremap <C-Down> :silent! let &guifont = substitute(
  \ '\=eval(submatch(0)-1)',
  \ 'g')<CR>
 
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config NerdTree Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>nd :NERDTreeToggle<CR> " Open NerdTree
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config buffer explore Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0 " Do not show default help.
+let g:bufExplorerShowRelativePath=1 " Show relative paths.
+let g:bufExplorerSortBy='mru' " Sort by most recently used.
+let g:bufExplorerSplitRight=0 " Split left.
+let g:bufExplorerSplitVertical=1 " Split vertically.
+let g:bufExplorerSplitVertSize = 30 " Split width
+let g:bufExplorerUseCurrentWindow=1 " Open in new window.
+autocmd BufWinEnter \[Buf\ List\] setl nonumber
+map <leader>o :BufExplorer<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config vim latex Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType tex TTarget pdf " tex target
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
 
