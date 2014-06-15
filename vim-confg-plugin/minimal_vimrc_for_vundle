@@ -29,11 +29,11 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'wincent/Command-T'
 Bundle 'L9'
-Bundle 'FuzzyFinder' 
+Bundle 'FuzzyFinder'
 Bundle 'mru'
 Bundle 'tComment'
 
-set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23 
+set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -507,7 +507,8 @@ map <leader>o :BufExplorer<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Config vim latex Plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType tex TTarget pdf " tex target
+" tex target
+autocmd FileType tex TTarget pdf
 " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
