@@ -461,21 +461,6 @@ nnoremap <C-Down> :silent! let &guifont = substitute(
  \ '\=eval(submatch(0)-1)',
  \ 'g')<CR>
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Bundle config`
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"  Open NerdTree
-map <leader>nd :NERDTreeToggle<CR>
-
-" tex target
-autocmd FileType tex TTarget pdf
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
 set diffexpr=MyDiff()
 function MyDiff()
   let opt = '-a --binary '
@@ -500,3 +485,31 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config NerdTree Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>nd :NERDTreeToggle<CR> " Open NerdTree
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config buffer explore Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0 " Do not show default help.
+let g:bufExplorerShowRelativePath=1 " Show relative paths.
+let g:bufExplorerSortBy='mru' " Sort by most recently used.
+let g:bufExplorerSplitRight=0 " Split left.
+let g:bufExplorerSplitVertical=1 " Split vertically.
+let g:bufExplorerSplitVertSize = 30 " Split width
+let g:bufExplorerUseCurrentWindow=1 " Open in new window.
+autocmd BufWinEnter \[Buf\ List\] setl nonumber
+map <leader>o :BufExplorer<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Config vim latex Plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType tex TTarget pdf " tex target
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
+
