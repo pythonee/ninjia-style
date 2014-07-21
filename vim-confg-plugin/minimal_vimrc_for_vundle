@@ -3,7 +3,9 @@
 " require solarized theme
 " require microsoft yahei mono font
 " require download latex suit from sourceforg
-" require download you complete me from bitbucket(require download libclang.dll from http://www.ishani.org/)
+" require download you complete me from bitbucket
+" require download libclang.dll from http://www.ishani.org/
+" require visual studio express for windows desktop
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Load Vundle
@@ -21,7 +23,7 @@ Bundle 'jlanzarotta/bufexplorer'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'klen/python-mode'
 Bundle 'scrooloose/nerdtree'
-Bundle 'https://bitbucket.org/Haroogan/vim-youcompleteme-for-windows.git'
+" Bundle 'https://bitbucket.org/Haroogan/vim-youcompleteme-for-windows.git'
 Bundle 'mattn/emmet-vim'
 Bundle 'mileszs/ack.vim'
 Bundle 'Lokaltog/vim-easymotion'
@@ -138,7 +140,7 @@ set guifont=Microsoft\ YaHei\ Mono:h11:cANSI
 
 set termencoding=utf-8
 set fileencoding=utf-8
-set fileencodings=utf-8,gb18030,ucs-bom,english,utf-16,big5
+set fileencodings=ucs-bom,utf-8,chinese,latin1,big5,euc-jp,euc-kr
 
 set langmenu=en_US.utf-8
 
