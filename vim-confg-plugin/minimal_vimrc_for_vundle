@@ -14,7 +14,7 @@
 " require download libclang.dll from http://www.ishani.org/
 " require visual studio express for windows desktop
 
-" useful repo
+" useful repo(download vim with python,vim,ruby support)
 " https://bitbucket.org/Haroogan
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
