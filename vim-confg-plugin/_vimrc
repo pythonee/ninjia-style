@@ -6,6 +6,7 @@
 " require solarized theme
 " require microsoft yahei mono font
 " require download latex suit from sourceforg
+" not cross platform compatiable,show set rtp based on OS
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " if need youCompleteMe Plugin
@@ -23,7 +24,7 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=$VIM/bundle/vundle/
 call vundle#rc()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -31,7 +32,7 @@ call vundle#rc()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'jlanzarotta/bufexplorer'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'klen/python-mode'
+"Bundle 'klen/python-mode'
 Bundle 'scrooloose/nerdtree'
 " Bundle 'https://bitbucket.org/Haroogan/vim-youcompleteme-for-windows.git'
 Bundle 'Shougo/neocomplete.vim'
@@ -46,7 +47,7 @@ Bundle 'FuzzyFinder'
 Bundle 'mru'
 Bundle 'tComment'
 
-set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23
+"set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -135,8 +136,8 @@ set tm=500
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"colorscheme corporation
-colorscheme solarized
+colorscheme corporation
+"colorscheme solarized
 let g:rehash256 = 1
 
 " when using molokai in console version
