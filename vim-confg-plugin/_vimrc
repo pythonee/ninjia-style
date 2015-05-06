@@ -1,10 +1,10 @@
-" require python
-" require lua 5.2 
-" recompile vim with python and lua support
-" require git
-" require vundle
-" require solarized theme
-" require microsoft yahei mono font
+" require python; can download from https://www.python.org/
+" require lua 5.2 dll; can download from http://liquidtelecom.dl.sourceforge.net/project/luabinaries/5.2.3/Windows%20Libraries/Dynamic/lua-5.2.3_Win32_dllw4_lib.zip
+" recompile vim with python and lua support, can download from https://bitbucket.org/Haroogan/vim-for-windows
+" require git; can download from https://msysgit.github.io
+" require vundle; can clone from https://github.com/gmarik/Vundle.vim
+" require solarized theme; just run BundleInstall 
+" require microsoft yahei mono font; 
 " require download latex suit from sourceforg
 " not cross platform compatiable,show set rtp based on OS
 
@@ -24,6 +24,7 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
+" if unix-like os, should Change to ~/.vim/bundle 
 set rtp+=$VIM/bundle/vundle/
 call vundle#rc()
 
@@ -136,8 +137,8 @@ set tm=500
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme corporation
-"colorscheme solarized
+"colorscheme corporation
+colorscheme solarized
 let g:rehash256 = 1
 
 " when using molokai in console version
