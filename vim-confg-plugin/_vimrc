@@ -47,6 +47,7 @@ Bundle 'L9'
 Bundle 'FuzzyFinder'
 Bundle 'mru'
 Bundle 'tComment'
+Plugin 'elzr/vim-json'
 
 "set rtp+=$VIMRUNTIME\extra-bundle\vim-latex-1.8.23
 
@@ -618,3 +619,15 @@ endif
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" from vim-json
+au! BufRead,BufNewFile *.json set filetype=json
+augroup json_autocmd
+  autocmd!
+  autocmd FileType json set autoindent
+  autocmd FileType json set formatoptions=tcq2l
+  autocmd FileType json set textwidth=78 shiftwidth=2
+  autocmd FileType json set softtabstop=2 tabstop=8
+  autocmd FileType json set expandtab
+  autocmd FileType json set foldmethod=syntax
+augroup END
